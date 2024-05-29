@@ -1,10 +1,11 @@
 /** @jsxImportSource frog/jsx */
 
-import { Button, Frog, TextInput } from "frog";
+import { Button, Frog, TextInput, parseEther } from "frog";
 import { devtools } from "frog/dev";
 // import { neynar } from 'frog/hubs'
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
+import { abi } from "./abi";
 
 const app = new Frog({
   assetsPath: "/",
@@ -32,6 +33,7 @@ app.frame("/", (c) => {
     ),
     intents: [
       <Button>Go to the next frame</Button>,
+      <Button.Transaction target="/mint">Mint the NFT</Button.Transaction>,
       <Button.Link href="https://www.youtube.com/watch?v=wDchsz8nmbo">
         Go to the video
       </Button.Link>,
@@ -54,6 +56,17 @@ app.frame("/second", (c) => {
       </div>
     ),
     intents: [<Button>Go to the next frame</Button>],
+  });
+});
+
+app.transaction("/mint", (c) => {
+  const { inputText } = c;
+  // Contract transaction response.
+  return c.contract({
+    abi,
+    chainId: "eip155:84532",
+    functionName: "mint",
+    to: "0xf15E9342D00608715BbcD210571C58454880c3FA",
   });
 });
 
