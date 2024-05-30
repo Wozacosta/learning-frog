@@ -58,7 +58,7 @@ app.frame("/", (c) => {
       <Button>Create account</Button>,
       <Button.Transaction target="/mint">Mint the NFT</Button.Transaction>,
       <Button.Link href="https://learning-frog-nine.vercell.app/">
-        Go to the website
+        Website
       </Button.Link>,
     ],
   });
