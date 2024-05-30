@@ -57,8 +57,8 @@ app.frame("/", (c) => {
     intents: [
       <Button>Create account</Button>,
       <Button.Transaction target="/mint">Mint the NFT</Button.Transaction>,
-      <Button.Link href="https://www.youtube.com/watch?v=wDchsz8nmbo">
-        Go to the video
+      <Button.Link href="https://learning-frog-nine.vercell.app/">
+        Go to the website
       </Button.Link>,
     ],
   });
