@@ -16,12 +16,13 @@ import {
 } from "viem";
 import { sepolia } from "viem/chains";
 import { createSmartAccountClient, PaymasterMode } from "@biconomy/account";
-import { createSystem, colors } from "frog/ui";
 
 const CHAINID = "11155111";
-const bundlerUrl = `https://bundler.biconomy.io/api/v2/${CHAINID}/nJPK7B3ru.dd7f7861-190d-41bd-af80-6877f74b8f44`;
 
-export const { Box, Heading, Text, VStack, vars } = createSystem({
+const bundlerUrl = `https://bundler.biconomy.io/api/v2/${CHAINID}/nJPK7B3ru.dd7f7861-190d-41bd-af80-6877f74b8f44`;
+import { createSystem, colors } from "frog/ui";
+
+const { Box, Heading, Text, VStack, vars } = createSystem({
   colors: colors.dark,
 });
 
