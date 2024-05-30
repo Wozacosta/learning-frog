@@ -4,11 +4,21 @@ import Image from "next/image";
 
 import styles from "./page.module.css";
 
-const vercelUrl = "https://learning-frog-nine.vercel.app/"
+let vercelUrl = "https://learning-frog-nine.vercel.app/"
+const isDevelopment = process.env.VERCEL_ENV === "development";
+console.log({vercelenv : process.env.VERCEL_ENV})
+
+if (isDevelopment) {
+  vercelUrl = "http://localhost:3000";
+  console.log("Running in development environment");
+} else {
+  console.log("Running in production environment");
+}
+
 
 export async function generateMetadata(): Promise<Metadata> {
   const frameTags = await getFrameMetadata(
-    `${vercelUrl || "http://localhost:3000"}/api`
+    `${vercelUrl}/api`
   );
   return {
     other: frameTags,

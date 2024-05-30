@@ -2,7 +2,6 @@
 
 import { Button, Frog, TextInput, parseEther } from "frog";
 import { devtools } from "frog/dev";
-// import { neynar } from 'frog/hubs'
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
 import { abi } from "./abi";
@@ -41,7 +40,7 @@ const app = new Frog({
 // export const runtime = 'edge'
 
 app.frame("/", (c) => {
-  console.log("on /");
+
   return c.res({
     action: "/create_account",
     image: (
@@ -65,14 +64,12 @@ app.frame("/", (c) => {
 });
 
 app.frame("/create_account", async (c) => {
-  console.log("on /create_account");
 
   const { frameData } = c;
   const fid = frameData?.fid;
   const messageHash = frameData?.messageHash;
 
   if (!messageHash) {
-    console.warn("ABORTING");
     return c.res({
       action: "/",
       image: (
@@ -154,7 +151,6 @@ app.frame("/create_account", async (c) => {
 });
 
 app.transaction("/mint", (c) => {
-  const { inputText } = c;
   // Contract transaction response.
   return c.contract({
     abi,
