@@ -47,7 +47,7 @@ app.frame("/", (c) => {
     image: (
       <Box grow alignVertical="center" backgroundColor="purple100" padding="32">
         <VStack gap="4">
-          <Heading>Ledger x Frog 🐸</Heading>
+          <Heading>Let's use Frog 🐸</Heading>
           <Text color="red800" size="24">
             Build consistent frame experiences
           </Text>
