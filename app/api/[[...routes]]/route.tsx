@@ -6,14 +6,25 @@ import { devtools } from "frog/dev";
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
 import { abi } from "./abi";
-import { NextResponse } from "next/server";
 import { privateKeyToAccount } from "viem/accounts";
-import { Hex, createWalletClient, encodeFunctionData, http, parseAbi } from "viem";
-import { sepolia } from "viem/chains";
 import {
-  createSmartAccountClient,
-  PaymasterMode,
-} from "@biconomy/account";
+  Hex,
+  createWalletClient,
+  encodeFunctionData,
+  http,
+  parseAbi,
+} from "viem";
+import { sepolia } from "viem/chains";
+import { createSmartAccountClient, PaymasterMode } from "@biconomy/account";
+
+const CHAINID = "11155111";
+
+const bundlerUrl = `https://bundler.biconomy.io/api/v2/${CHAINID}/nJPK7B3ru.dd7f7861-190d-41bd-af80-6877f74b8f44`;
+import { createSystem, colors } from "frog/ui";
+
+export const { Box, Heading, Text, VStack, vars } = createSystem({
+  colors: colors.dark,
+});
 
 const privateKey = process.env.PRIVATE_KEY!;
 const paymasterApiKey = process.env.PAYMASTER_API_KEY!;
@@ -21,6 +32,7 @@ const paymasterApiKey = process.env.PAYMASTER_API_KEY!;
 const app = new Frog({
   assetsPath: "/",
   basePath: "/api",
+  ui: { vars },
   // Supply a Hub to enable frame verification.
   // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
 });
@@ -34,15 +46,14 @@ app.frame("/", (c) => {
   return c.res({
     action: "/create_account",
     image: (
-      <div
-        style={{
-          color: "white",
-          fontSize: 60,
-          marginTop: 30,
-        }}
-      >
-        Deploy customised smart account
-      </div>
+      <Box grow alignVertical="center" backgroundColor="purple100" padding="32">
+        <VStack gap="4">
+          <Heading>Ledger x Frog 🐸</Heading>
+          <Text color="red800" size="24">
+            Build consistent frame experiences
+          </Text>
+        </VStack>
+      </Box>
     ),
     intents: [
       <Button>Create account</Button>,
@@ -62,9 +73,7 @@ app.frame("/create_account", async (c) => {
   const messageHash = frameData?.messageHash;
 
   if (!messageHash) {
-    console.log("ABORTING")
-    // return new NextResponse("Invalid Frame message", { status: 400 })
-    // return c.error({message: "Invalid Frame message", });
+    console.warn("ABORTING");
     return c.res({
       action: "/",
       image: (
@@ -78,14 +87,9 @@ app.frame("/create_account", async (c) => {
           ERROR - Invalid Frame message
         </div>
       ),
-      intents: [<Button>Go to the next frame</Button>],
-    })
+      intents: [<Button>Go to the previous frame</Button>],
+    });
   }
-
-  console.log({ fid, messageHash });
-  const CHAINID = "11155111"
-  
-  const bundlerUrl = `https://bundler.biconomy.io/api/v2/${CHAINID}/nJPK7B3ru.dd7f7861-190d-41bd-af80-6877f74b8f44`
 
   //@ts-ignore
   const account = privateKeyToAccount(privateKey);
@@ -106,8 +110,6 @@ app.frame("/create_account", async (c) => {
   });
   const scwAddress = await smartAccount.getAccountAddress();
   console.log("SCW Address", scwAddress);
-  
-  // console.log({smartAccount})
 
   const nftAddress = "0x1758f42Af7026fBbB559Dc60EcE0De3ef81f665e";
   const parsedAbi = parseAbi(["function safeMint(address _to)"]);
@@ -116,13 +118,12 @@ app.frame("/create_account", async (c) => {
     functionName: "safeMint",
     args: [scwAddress as Hex],
   });
-  
-  console.log({nftData})
 
-  const userOpResponse = await smartAccount.sendTransaction({
+  const userOpResponse = await smartAccount.sendTransaction(
+    {
       to: nftAddress,
       data: nftData,
-    }, 
+    },
     {
       paymasterServiceData: {
         mode: PaymasterMode.SPONSORED,
@@ -135,20 +136,19 @@ app.frame("/create_account", async (c) => {
   return c.res({
     action: "/",
     image: (
-      <div
-        style={{
-          color: "white",
-          fontSize: 60,
-          marginTop: 30,
-        }}
-      >
-        Transaction deployed
-      </div>
+      <Box grow alignVertical="center" backgroundColor="purple100" padding="32">
+        <VStack gap="4">
+          <Heading>Transaction deployed</Heading>
+          <Text color="red800" size="16">
+            {`${transactionHash}`}
+          </Text>
+        </VStack>
+      </Box>
     ),
     intents: [
       <Button>Go back</Button>,
       <Button.Link href={`https://sepolia.etherscan.io/address/${scwAddress}`}>
-        Transaction in explorer 
+        Transaction in explorer
       </Button.Link>,
     ],
   });
