@@ -52,7 +52,7 @@ app.frame("/", (c) => {
     intents: [
       <Button>Create account</Button>,
       <Button.Transaction target="/mint">Mint the NFT</Button.Transaction>,
-      <Button.Link href="https://learning-frog-nine.vercel.app/">
+      <Button.Link href="https://passkey-sessionkey-demo.vercel.app/">
         Website
       </Button.Link>,
     ],
