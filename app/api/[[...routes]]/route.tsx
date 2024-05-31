@@ -32,12 +32,8 @@ const app = new Frog({
   assetsPath: "/",
   basePath: "/api",
   ui: { vars },
-  // Supply a Hub to enable frame verification.
-  // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
 });
 
-// Uncomment to use Edge Runtime
-// export const runtime = 'edge'
 
 app.frame("/", (c) => {
 
@@ -56,7 +52,7 @@ app.frame("/", (c) => {
     intents: [
       <Button>Create account</Button>,
       <Button.Transaction target="/mint">Mint the NFT</Button.Transaction>,
-      <Button.Link href="https://learning-frog-nine.vercell.app/">
+      <Button.Link href="https://learning-frog-nine.vercel.app/">
         Website
       </Button.Link>,
     ],
