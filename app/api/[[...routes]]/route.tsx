@@ -42,6 +42,7 @@ app.frame("/", (c) => {
     image: (
       <Box grow alignVertical="center" backgroundColor="purple100" padding="32">
         <VStack gap="4">
+          {/* TODO: Ledger X Frog */}
           <Heading>Let's use Frog 🐸</Heading>
           <Text color="red800" size="24">
             Build consistent frame experiences
@@ -50,6 +51,7 @@ app.frame("/", (c) => {
       </Box>
     ),
     intents: [
+      // TODO: new name-> Free Mint 
       <Button>Create account</Button>,
       <Button.Transaction target="/mint">Mint the NFT</Button.Transaction>,
       <Button.Link href="https://passkey-sessionkey-demo.vercel.app/">
